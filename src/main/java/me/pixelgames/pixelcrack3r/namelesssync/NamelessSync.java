@@ -113,15 +113,17 @@ public class NamelessSync {
         try {
             File file = new File("./plugins/" + "NamelessSync" + "/configuration.json");
             if(!file.exists()) {
-                if(!file.getParentFile().exists()) file.getParentFile().mkdirs();
-                file.createNewFile();
+                if(!file.getParentFile().exists() && !file.getParentFile().mkdirs())
+                    throw new FileNotFoundException("Could not create directory " + file.getParentFile().getAbsolutePath());
+                if(!file.createNewFile()) throw new FileNotFoundException("Could not create file " + file.getAbsolutePath());
+
                 this.config = new JsonObject();
                 this.loadDefaults();
                 this.saveConfig();
             }
             this.config = JsonParser.parseReader(new FileReader(file)).getAsJsonObject();
         } catch (IOException e) {
-            e.printStackTrace();
+            this.getLogger().error("Could not load configuration file", e);
         }
     }
 
@@ -136,7 +138,7 @@ public class NamelessSync {
             writer.close();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            this.getLogger().error("Could not save configuration file", e);
         }
     }
 
@@ -145,7 +147,7 @@ public class NamelessSync {
     }
 
     public void loadWhitelist() {
-        this.users = ConfigHelper.loadConfig("whitelist", JsonArray::new);
+        this.whitelist = ConfigHelper.loadConfig("whitelist", JsonArray::new);
     }
 
     public void saveSyncedUsers() {
