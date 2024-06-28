@@ -145,7 +145,7 @@ public class NamelessSync {
     }
 
     public void loadWhitelist() {
-        this.users = ConfigHelper.loadConfig("whitelist", JsonArray::new);
+        this.whitelist = ConfigHelper.loadConfig("whitelist", JsonArray::new);
     }
 
     public void saveSyncedUsers() {
