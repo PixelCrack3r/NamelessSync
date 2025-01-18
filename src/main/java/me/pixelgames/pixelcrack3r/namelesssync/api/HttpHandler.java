@@ -15,7 +15,7 @@ public class HttpHandler {
 
             HttpRequest request = new HttpRequest();
 
-            request.setUrl(new URL(NamelessSync.getInstance().getConfig().get("api").getAsString() + "/users"));
+            request.setUrl(new URL(NamelessSync.getInstance().getConfig().get("api").getAsString() + "/users?limit=0"));
             request.setMethod("GET");
             request.setProperty("Authorization", "Bearer " + NamelessSync.getInstance().getConfig().get("api-key").getAsString());
 
